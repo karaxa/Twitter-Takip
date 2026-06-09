@@ -1,1 +1,29 @@
+name: RSS Takip
+on:
+  schedule:
+    - cron: '0 * * * *' # Her saat başı
+  workflow_dispatch:
 
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    permissions: { contents: write }
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with: { python-version: '3.9' }
+      - run: pip install -r requirements.txt
+      - name: Run bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python main.py
+      - name: Commit ve Push
+        run: |
+          git config user.name "bot"
+          git config user.email "bot@bot.com"
+          git add last_id.txt
+          git commit -m "Son ID güncellendi" || exit 0
+          git push
+          
