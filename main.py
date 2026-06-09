@@ -20,8 +20,15 @@ def save_last_id(id):
 feed = feedparser.parse(RSS_URL)
 last_id = get_last_id()
 
+feed = feedparser.parse(RSS_URL)
+print(f"Feed icerigi: {len(feed.entries)} tweet bulundu.") # Bunu ekle
+last_id = get_last_id()
+
 if feed.entries:
     newest_tweet = feed.entries[0]
+    print(f"En yeni tweet ID: {newest_tweet.id}") # Bunu ekle
+    
+    
     if newest_tweet.id != last_id:
         # Telegram'a gönder
         msg = f"Yeni Tweet: {newest_tweet.title}\n{newest_tweet.link}"
