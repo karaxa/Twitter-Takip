@@ -26,11 +26,16 @@ last_id = get_last_id()
 
 if feed.entries:
     newest_tweet = feed.entries[0]
-    print(f"En yeni tweet ID: {newest_tweet.id}") # Bunu ekle
-    
     
     if newest_tweet.id != last_id:
         # Telegram'a gönder
+        print(f"Tetikleme basarili! Yeni tweet tespit edildi: {newest_tweet.id}")
         msg = f"Yeni Tweet: {newest_tweet.title}\n{newest_tweet.link}"
         requests.get(f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage?chat_id={CHAT_ID}&text={msg}")
         save_last_id(newest_tweet.id)
+    else:
+        # Tweet yoksa sessizce çık
+        print("Yeni tweet yok, tetikleyici bekleniyor.")
+else:
+    print("RSS kaynaginda hic tweet bulunamadi!")
+    
