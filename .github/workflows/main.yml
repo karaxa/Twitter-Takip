@@ -1,18 +1,20 @@
 name: RSS Takip
 on:
   schedule:
-    -     - cron: '*/5 * * * *' # Her saat başı
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    permissions: { contents: write }
+    permissions: 
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v4
-        with: { python-version: '3.9' }
+        with: 
+          python-version: '3.9'
       - run: pip install -r requirements.txt
       - name: Run bot
         env:
@@ -24,6 +26,6 @@ jobs:
           git config user.name "bot"
           git config user.email "bot@bot.com"
           git add last_id.txt
-          git commit -m "Son ID güncellendi" || exit 0
+          git commit -m "Son ID guncellendi" || exit 0
           git push
           
